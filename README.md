@@ -7,3 +7,4 @@ ReactJSを理解している前提で進めます。
 
 * [start](https://github.com/teradonburi/learnReactNative/tree/start)
 * [eslint](https://github.com/teradonburi/learnReactNative/tree/eslint)
+* [redux](https://github.com/teradonburi/learnReactNative/tree/redux)
