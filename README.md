@@ -2,7 +2,7 @@
 
 [React Nativeインストールガイド](https://facebook.github.io/react-native/docs/getting-started.html)
 
-NodeJSはインストール済み前提(v8.6.0)  
+NodeJSはインストール済み前提(v8.10.0)  
 以下を追加でインストール  
 
 ```
@@ -75,7 +75,7 @@ $ react-native run-android
 
 ## iOS
 
-IDE:Xcode 9  
+IDE:Xcode  
 Apple Developerの[ダウンロードページ](https://developer.apple.com/download/more/)より取得
 
 コマンドラインツールをXCodeのPreferenceよりダウンロードしておく  
@@ -87,10 +87,22 @@ Apple Developerの[ダウンロードページ](https://developer.apple.com/down
 $ react-native run-ios
 ```
 
+# VSCodeの設定
+VSCodeに[Flow](https://flow.org/)を認識させる。  
+[flow-for-vscode](https://github.com/flowtype/flow-for-vscode)プラグインを導入する。  
+.vscode/settings.jsonを作成して以下を記述  
+
+```settings.json
+{
+  "flow.useNPMPackagedFlow": true,
+  "javascript.validate.enable": false,
+}
+```
+
 # ライブラリ
 
 * UI：[native-base](https://docs.nativebase.io/)、[アイコン](https://github.com/oblador/react-native-vector-icons)
 * 画面遷移：[react-navigation](https://reactnavigation.org/docs/intro/)、[redux + react-navigation](https://qiita.com/kazuyuka76/items/6295e5ee282e5ba494a1)
 * 通信：[axios](https://github.com/axios/axios)
 * ESLint: [eslint-plugin-react-native](https://github.com/intellicode/eslint-plugin-react-native)
-* Test: Jest
+* Test: [Jest](http://jestjs.io/docs/ja/tutorial-react-native.html)
