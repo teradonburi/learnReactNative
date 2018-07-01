@@ -1,5 +1,6 @@
 # ESLint
 以下のESLintを導入します。  
+[eslint-plugin-react-native](https://github.com/intellicode/eslint-plugin-react-native)
 
 ```
 $ yarn add --dev eslint babel-eslint eslint-react eslint-react-native
