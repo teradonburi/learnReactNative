@@ -7,6 +7,9 @@ import thunk from 'redux-thunk'
 import client from 'axios'
 import allReducers from './src/modules/reducer'
 import App from './src/App'
+import { StyleProvider } from 'native-base'
+import getTheme from './native-base-theme/components'
+import material from './native-base-theme/variables/material'
 
 // TODO: 開発時以外は環境設定で有効にしない
 const isDevelopment = true
@@ -38,9 +41,11 @@ client.interceptors.response.use(res => res, err => {
 
 
 const Application = () => (
-  <Provider store={store}>
-    <App/>
-  </Provider>
+  <StyleProvider style={getTheme(material)}>
+    <Provider store={store}>
+      <App/>
+    </Provider>
+  </StyleProvider>
 )
 
 AppRegistry.registerComponent('learnReactNative', () => Application)
