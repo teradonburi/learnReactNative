@@ -80,8 +80,18 @@ AppRegistry.registerComponent('learnReactNative', () => Application)
 
 ![Custmizer](./docs/customizer.png)
 
+# アイコン
+アイコンは[Icon](http://docs.nativebase.io/Components.html#header-transparent-headref)コンポーネントを利用することで利用可能です。  
+内部的には[react-native-vector-icons](https://github.com/oblador/react-native-vector-icons)のvectorアイコンを利用しています。  
+[アイコン一覧](https://oblador.github.io/react-native-vector-icons/)より利用可能なアイコンを検索して  
+種別を指定して利用します。  
+
+```
+<Icon type='Ionicons' name='md-beer' style={{color: iconColor}}/>
+```
+
 # NativeBaseのUIコンポーネントを利用する
-App.jsにてText、Thumbnailコンポーネントを利用します。  
+App.jsにてText、Thumbnail、Button、Iconコンポーネントを利用します。  
 
 ```App.js
 /**
@@ -93,7 +103,7 @@ App.jsにてText、Thumbnailコンポーネントを利用します。
 import React from 'react'
 import { connect } from 'react-redux'
 import { Platform, StyleSheet, View } from 'react-native'
-import { Text, Thumbnail } from 'native-base'
+import { Text, Thumbnail, Icon, Button } from 'native-base'
 import { load } from './modules/user'
 
 const instructions = Platform.select({
@@ -102,6 +112,7 @@ const instructions = Platform.select({
 })
 
 const bgColor = '#F5FCFF'
+const iconColor = '#aaaa00'
 
 const styles = StyleSheet.create({
   container: {
@@ -115,6 +126,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  beer: {
+    marginLeft: -25,
+  },
 })
 
 @connect(
@@ -123,6 +137,7 @@ state => ({
 }),
 {load})
 export default class App extends React.Component {
+  state = {count: 0}
 
   componentDidMount () {
     this.props.load()
@@ -130,7 +145,8 @@ export default class App extends React.Component {
 
   render () {
     const { user } = this.props
-    console.log(user)
+    const { count } = this.state
+
     return (
       <View style={styles.container}>
         {user &&
@@ -140,6 +156,10 @@ export default class App extends React.Component {
               <Text>名前: {user.name.last} {user.name.first}</Text>
               <Text>性別: {user.gender}</Text>
               <Text>プラットフォーム: {instructions}</Text>
+              <Button small iconRight  transparent primary onPress={() => this.setState({count: count + 1})}>
+                <Icon type='Ionicons' name='md-beer' style={{color: iconColor}}/>
+                <Text style={styles.beer}>{count}</Text>
+              </Button>
             </View>
           </View>
         }
