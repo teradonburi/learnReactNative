@@ -103,6 +103,4 @@ VSCodeに[Flow](https://flow.org/)を認識させる。
 
 * UI：[native-base](https://docs.nativebase.io/)、[アイコン](https://github.com/oblador/react-native-vector-icons)
 * 画面遷移：[react-navigation](https://reactnavigation.org/docs/intro/)、[redux + react-navigation](https://qiita.com/kazuyuka76/items/6295e5ee282e5ba494a1)
-* 通信：[axios](https://github.com/axios/axios)
-* ESLint: [eslint-plugin-react-native](https://github.com/intellicode/eslint-plugin-react-native)
 * Test: [Jest](http://jestjs.io/docs/ja/tutorial-react-native.html)
