@@ -7,6 +7,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Platform, StyleSheet, Image, Text, View } from 'react-native'
+import { } from 'native-base'
 import { load } from './modules/user'
 
 const instructions = Platform.select({
