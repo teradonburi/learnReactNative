@@ -2,7 +2,8 @@
 以下のnpmパッケージを追加する  
 
 ```
-$ yarn add --dev redux react-redux redux-thunk remote-redux-devtools@0.5.0 axios babel-plugin-transform-decorators-legacy
+$ yarn add redux react-redux redux-thunk axios 
+$ yarn add --dev remote-redux-devtools@0.5.0 babel-plugin-transform-decorators-legacy
 ```
 
 .babelrcにtransform-decorators-legacyプラグインとbabel-plugin-module-resolverの設定を追加します。   
