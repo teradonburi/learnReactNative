@@ -2,7 +2,7 @@
 以下のnpmパッケージを追加する  
 
 ```
-$ yarn add --dev redux react-redux redux-thunk remote-redux-devtools axios babel-plugin-transform-decorators-legacy
+$ yarn add --dev redux react-redux redux-thunk remote-redux-devtools@0.5.0 axios babel-plugin-transform-decorators-legacy
 ```
 
 .babelrcにtransform-decorators-legacyプラグインとbabel-plugin-module-resolverの設定を追加します。   
@@ -178,3 +178,33 @@ export default class App extends React.Component {
   }
 }
 ```
+
+# デバッグ
+
+エミュレータ上でCommand + Dキーを押すと各種デバッグ機能が使えます。
+
+![デバッグオプション](./docs/debugOption.png)
+
+* Reload: 画面を再読み込みします
+* Start Remote JS Debugging: Chromeの開発者ツールでデバッグできるようになります
+* Enable Live Reload: ファイル変更保存時に自動的に画面を再読込します。
+* Start Systrace: 端末のメモリなどのハードウェア状態を確認できます。
+* Enable Hot Reloading: Live Reloadとセットで使います。内部パラメータは変更しないで画面表示のみ再レンダリングします。
+* Toggle Inspector: Viewのレイアウト情報をデバッグできます。
+* Show Perf Monitor: どのレンダリングに負荷がかかっているかなどの
+
+Start Remote JS Debuggingを有効にするとChromeで以下の画面が開きます。  
+開発者ツールを開くとリモートでソースコードが見れるようになります。
+ブレークポイントなどをセットしてデバッグします。  
+
+![開発者ツール](./docs/devTool.png)
+
+Remote Redux Devtoolを導入している前提で
+
+[Chromeアドオン](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd)を入れておくと
+エミュレータのReduxのパラメータ状態を確認することができます。  
+開発者ツール画面を開いている状態でアドオンのアイコンからOpen Remote Devtoolsを開きます。  
+
+![リモートReduxDevtoolを開く](./docs/openDevTool.png)
+
+![ReduxDevtool](./docs/remoteRedux.png)
