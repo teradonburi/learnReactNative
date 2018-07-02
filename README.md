@@ -8,3 +8,6 @@ ReactJSを理解している前提で進めます。
 * [start](https://github.com/teradonburi/learnReactNative/tree/start)
 * [eslint](https://github.com/teradonburi/learnReactNative/tree/eslint)
 * [redux](https://github.com/teradonburi/learnReactNative/tree/redux)
+* [native-base](https://github.com/teradonburi/learnReactNative/tree/native-base)
+* [react-navigation](https://github.com/teradonburi/learnReactNative/tree/react-navigation)
+* [jest](https://github.com/teradonburi/learnReactNative/tree/jest)
