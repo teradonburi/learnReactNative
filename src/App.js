@@ -1,73 +1,20 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React from 'react'
-import { connect } from 'react-redux'
-import { Platform, StyleSheet, View } from 'react-native'
-import { Text, Thumbnail, Icon, Button } from 'native-base'
-import { load } from './modules/user'
+import { createStackNavigator } from 'react-navigation'
+import { YellowBox } from 'react-native'
+YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader'])
 
-const instructions = Platform.select({
-  ios: 'ios',
-  android: 'android',
-})
+// 画面を読み込み
+import EntryScreen from './screens/EntryScreen'
+import UserScreen from './screens/UserScreen'
 
-const bgColor = '#F5FCFF'
-const iconColor = '#aaaa00'
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: bgColor,
-  },
-  content: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  beer: {
-    marginLeft: -25,
-  },
-})
+// ルーティングする画面を定義
+export const Navigation = createStackNavigator({
+  Entry: { screen: EntryScreen, navigationOptions: { header: null } },
+  Login: { screen: UserScreen, navigationOptions: { header: null }},
+}, {initialRouteName: 'Entry'})
 
-@connect(
-state => ({
-  user: state.user.user,
-}),
-{load})
-export default class App extends React.Component {
-  state = {count: 0}
 
-  componentDidMount () {
-    this.props.load()
-  }
-
-  render () {
-    const { user } = this.props
-    const { count } = this.state
-
-    return (
-      <View style={styles.container}>
-        {user &&
-          <View style={styles.content}>
-            <Thumbnail source={{uri: user.picture.large}} />
-            <View>
-              <Text>名前: {user.name.last} {user.name.first}</Text>
-              <Text>性別: {user.gender}</Text>
-              <Text>プラットフォーム: {instructions}</Text>
-              <Button small iconRight  transparent primary onPress={() => this.setState({count: count + 1})}>
-                <Icon type='Ionicons' name='md-beer' style={{color: iconColor}}/>
-                <Text style={styles.beer}>{count}</Text>
-              </Button>
-            </View>
-          </View>
-        }
-      </View>
-    )
-  }
-}
+export const App = () => (
+  <Navigation />
+)

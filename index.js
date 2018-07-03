@@ -6,10 +6,10 @@ import { composeWithDevTools } from 'remote-redux-devtools'
 import thunk from 'redux-thunk'
 import client from 'axios'
 import allReducers from './src/modules/reducer'
-import App from './src/App'
 import { StyleProvider } from 'native-base'
 import getTheme from './native-base-theme/components'
 import material from './native-base-theme/variables/material'
+import { App } from './src/App'
 
 // TODO: 開発時以外は環境設定で有効にしない
 const isDevelopment = true

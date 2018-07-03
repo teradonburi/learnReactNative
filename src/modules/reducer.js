@@ -1,7 +1,7 @@
-import {combineReducers} from 'redux'
+import { combineReducers } from 'redux'
 import user from './user'
 
-const allReducers= combineReducers({
+const allReducers = combineReducers({
   user,
 })
 
