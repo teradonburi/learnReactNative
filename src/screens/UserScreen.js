@@ -46,6 +46,7 @@ const HeaderBackButton = ({onPress}) => (
 @connect(
 state => ({
   user: state.user.user,
+  email: state.user.email,
 }),
 {load})
 export default class UserScreen extends React.Component {
@@ -56,7 +57,7 @@ export default class UserScreen extends React.Component {
   }
 
   render () {
-    const { user, navigation } = this.props
+    const { user, email, navigation } = this.props
     const { count } = this.state
 
     return (
@@ -77,6 +78,7 @@ export default class UserScreen extends React.Component {
                   <Text>名前: {user.name.last} {user.name.first}</Text>
                   <Text>性別: {user.gender}</Text>
                   <Text>プラットフォーム: {instructions}</Text>
+                  <Text>email: {email}</Text>
                   <Button small iconRight  transparent primary onPress={() => this.setState({count: count + 1})}>
                     <Icon type='Ionicons' name='md-beer' style={{color: iconColor}}/>
                     <Text style={styles.beer}>{count}</Text>

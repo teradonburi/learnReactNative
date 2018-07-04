@@ -1,7 +1,9 @@
 const LOAD = 'user/LOAD'
+const UPDATE = 'user/UPDATE'
 
 const initData = {
   user: null,
+  email: null,
 }
 
 export default function reducer(state = initData, action = {}) {
@@ -10,6 +12,11 @@ export default function reducer(state = initData, action = {}) {
       return {
         ...state,
         user: action.user || state.user,
+      }
+    case UPDATE:
+      return {
+        ...state,
+        email: action.email || state.email,
       }
     default:
       return state
@@ -25,5 +32,12 @@ export function load() {
         dispatch({type: LOAD, user: user.results[0]})
         return user
       })
+  }
+}
+
+export function update(email) {
+  return (dispatch) => {
+    dispatch({type: UPDATE, email})
+    return Promise.resolve(email)
   }
 }
