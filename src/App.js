@@ -11,7 +11,7 @@ import UserScreen from './screens/UserScreen'
 // ルーティングする画面を定義
 export const Navigation = createStackNavigator({
   Entry: { screen: EntryScreen, navigationOptions: { header: null } },
-  Login: { screen: UserScreen, navigationOptions: { header: null }},
+  User: { screen: UserScreen, navigationOptions: { header: null }},
 }, {initialRouteName: 'Entry'})
 
 

@@ -68,7 +68,7 @@ export default class EntryScreen extends React.Component {
 
   submit = (values) => {
     const { navigation } = this.props
-    this.props.update(values.email).then(() => navigation.navigate('Login'))
+    this.props.update(values.email).then(() => navigation.navigate('User'))
   }
 
   render () {
