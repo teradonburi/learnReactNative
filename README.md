@@ -1,339 +1,212 @@
-# redux-form
-
-form送信をする場合はredux-formライブラリが便利なので、  
-redux-formライブラリを導入します。  
+# jest
+[Jest](https://jestjs.io/docs/ja/tutorial-react-native)はJavaScriptのテストフレームワークです。  
+特にReact DOMツリーのテストもできるフレームワークです。(React以外のJavaScriptフレームワークでも使える)  
+jest用のeslintプラグインとjestテスト用のredux-mock-storeが必要なため、
+次のパッケージを追加します。  
 
 ```
-$ yarn add redux-form
+$ yarn add --dev eslint-plugin-jest redux-mock-store
 ```
 
-reducer.jsにてredux-formのreducerを追加します。  
+jestコマンドが使えるようにjestをglobalインストールします。 
 
-```reducer.js
-import { combineReducers } from 'redux'
-import { reducer as formReducer } from 'redux-form'
-import user from './user'
-
-const allReducers = combineReducers({
-  form: formReducer,
-  user,
-})
-
-export default allReducers
+```
+$ yarn global add jest
 ```
 
-EntryScreen画面にてメールアドレスの入力画面を作成します。  
+jestテスト用にnative-baseは自動変換されないようにpackage.jsonを変更します。  
 
-```EntryScreen.js
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
+```
+  "jest": {
+    "preset": "react-native",
+    "transformIgnorePatterns": [
+      "/node_modules/(?!native-base)/"
+    ]
+  }
+```
 
+testフォルダを作成します。  
+.eslintrc.jsをコピーしてjestテスト用の.eslintrc.jsを作成し、testフォルダ以下に置きます。  
+extendsに`'plugin:jest/recommended'`、pluginsに`'jest'`を追加します。  
+
+```
+  'extends': ['eslint:recommended', 'plugin:react/recommended', 'plugin:react-native/all', 'plugin:jest/recommended'],
+  'plugins': [
+    'react',
+    'react-native',
+    'jest',
+  ],
+```
+
+test.jsを作成します。  
+[UIのスナップショットテスト](https://jestjs.io/docs/ja/snapshot-testing)を行います。  
+
+```test.js
 import React from 'react'
-import { connect } from 'react-redux'
-import { View, StyleSheet } from 'react-native'
-import { Container, Item, Header, Body, Title, Content, Right, Footer, FooterTab, Card, Input, Button, Text } from 'native-base'
-import { Field, reduxForm } from 'redux-form'
-import { update } from '../modules/user'
+import EntryScreen from '../src/screens/EntryScreen'
+import renderer from 'react-test-renderer'
+import configureStore from 'redux-mock-store'
+import { Provider } from 'react-redux'
 
-const red = '#FF0000'
+const mockStore = configureStore([])
 
-const styles = StyleSheet.create({
-  error: {
-    color: red,
-  },
-})
+describe('EntryScreen', () => {
 
-const renderInput = ({ input, placeholder, meta: { touched, error } }) => {
-  const hasError = touched && error
-  return (
-    <View>
-      <Item error={!!hasError}>
-        <Input placeholder={placeholder} {...input}/>
-      </Item>
-      {hasError ? <Text style={styles.error}>{error}</Text> : <Text />}
-    </View>
-  )
-}
+  // redux-mock-storeの初期化
+  const initialState = {}
+  const store = mockStore(initialState)
 
-// メールアドレス判定
-function isEmail(mail) {
-  const mail_regex1 = new RegExp('(?:[-!#-\'*+/-9=?A-Z^-~]+\.?(?:\.[-!#-\'*+/-9=?A-Z^-~]+)*|"(?:[!#-\[\]-~]|\\\\[\x09 -~])*")@[-!#-\'*+/-9=?A-Z^-~]+(?:\.[-!#-\'*+/-9=?A-Z^-~]+)*') // eslint-disable-line
-  const mail_regex2 = new RegExp('^[^\@]+\@[^\@]+$')
-  if (mail.match(mail_regex1) && mail.match(mail_regex2)) {
-    // 全角チェック
-    if (mail.match(/[^a-zA-Z0-9\!\"\#\$\%\&\'\(\)\=\~\|\-\^\\\@\[\;\:\]\,\.\/\\\<\>\?\_\`\{\+\*\} ]/)) {
-      return false
-    }
-        // 末尾TLDチェック（〜.co,jpなどの末尾ミスチェック用）
-    if (!mail.match(/\.[a-z]+$/)) {
-      return false
-    }
-    return true
-  }
-  return false
-}
-
-@reduxForm({
-  form: 'login',
-  validate: values => {
-    const errors = {}
-    if (!values.email) {
-      errors.email = '必須項目です'
-    } else if (!isEmail(values.email)) {
-      errors.email = 'メールアドレスではありません'
-    }
-    return errors
-  },
-})
-@connect(
-() => ({}),
-{update})
-export default class EntryScreen extends React.Component {
-
-  submit = (values) => {
-    const { navigation } = this.props
-    this.props.update(values.email).then(() => navigation.navigate('Login'))
-  }
-
-  render () {
-    const {handleSubmit} = this.props
-
-    return (
-      <Container>
-        <Header>
-          <Body>
-            <Title>ログイン</Title>
-          </Body>
-          <Right />
-        </Header>
-        <Content>
-          <Card>
-            <Field name='email' component={renderInput} placeholder='メールアドレス' />
-          </Card>
-        </Content>
-        <Footer>
-          <FooterTab>
-            <Button full onPress={handleSubmit(this.submit)}><Text>次へ</Text></Button>
-          </FooterTab>
-        </Footer>
-      </Container>
-    )
-  }
-}
-```
-
-![EntryScreen](./docs/EntryScreen.png)
-
-Fieldコンポーネントで入力チェック項目を指定します。  
-name属性のパラメータ名がvalidateチェック時やsubmit時のvaluesのパラメータとして参照できるようになります。  
-
-```
-<Field name='email' component={renderInput} placeholder='メールアドレス' />
-```
-
-Fieldのパラメータは入力ごとにreduxForm decoratorsで入力チェックされます。  
-
-```
-@reduxForm({
-  form: 'login',
-  validate: values => {
-    const errors = {}
-    if (!values.email) {
-      errors.email = '必須項目です'
-    } else if (!isEmail(values.email)) {
-      errors.email = 'メールアドレスではありません'
-    }
-    return errors
-  },
+  it('renders correctly', () => {
+    const tree = renderer
+      .create(
+        <Provider store={store}>
+          <EntryScreen />
+        </Provider>
+      )
+      .toJSON()
+    expect(tree).toMatchSnapshot()
+  })
 })
 ```
 
-入力チェックコンポーネントです。  
-一度でもfocusがあたった場合にtouchedがtrueになります。  
-(focusが当たってvalidateエラーがある場合にエラーとする)
+`yarn test`でテストを実行すると、test/__snapshots__フォルダが作成されます。  
 
 ```
-const renderInput = ({ input, placeholder, meta: { touched, error } }) => {
-  const hasError = touched && error
-  return (
-    <View>
-      <Item error={!!hasError}>
-        <Input placeholder={placeholder} {...input}/>
-      </Item>
-      {hasError ? <Text style={styles.error}>{error}</Text> : <Text />}
-    </View>
-  )
-}
+$ yarn test
+yarn run v1.7.0
+$ jest
+ PASS  test/test.js
+  EntryScreen
+    ✓ renders correctly (66ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   1 passed, 1 total
+Time:        1.77s, estimated 2s
+Ran all test suites.
+✨  Done in 2.42s.
 ```
 
-handleSubmit関数を呼び出すことでsubmit処理の関数を呼び出すことができます。  
-values引数にはField項目の入力内容がnameパラメータ名で渡ってきます。  
-入力項目をupdate関数で送信し、完了後、User画面に遷移します。  
+EntryScreen.jsのrenderの一部を次のように変更します。  
 
 ```
-  submit = (values) => {
-    const { navigation } = this.props
-    this.props.update(values.email).then(() => navigation.navigate('Login'))
-  }
-  
-  render () {
-    const {handleSubmit} = this.props
-
-    return (
-      <Button full onPress={handleSubmit(this.submit)}><Text>次へ</Text></Button>
-    )
-  }
+<FooterTab>
+  <Button full onPress={handleSubmit(this.submit)}><Text>前へ</Text></Button>
+  <Button full onPress={handleSubmit(this.submit)}><Text>次へ</Text></Button>
+</FooterTab>
 ```
 
-userのreducerに（user.js）にupdate関数を追加します。  
-今回は擬似的にreduxにのみ保存します。  
+再びtestを行うとスナップショットからの変更が検知されてエラーとなります。  
 
-```user.js
-const LOAD = 'user/LOAD'
-const UPDATE = 'user/UPDATE'
+```
+$ yarn test
+yarn run v1.7.0
+$ jest
+ FAIL  test/test.js
+  EntryScreen
+    ✕ renders correctly (81ms)
 
-const initData = {
-  user: null,
-  email: null,
-}
+  ● EntryScreen › renders correctly
 
-export default function reducer(state = initData, action = {}) {
-  switch (action.type) {
-    case LOAD:
-      return {
-        ...state,
-        user: action.user || state.user,
-      }
-    case UPDATE:
-      return {
-        ...state,
-        email: action.email || state.email,
-      }
-    default:
-      return state
-  }
-}
+    expect(value).toMatchSnapshot()
 
-export function load() {
-  return (dispatch, getState, client) => {
-    return client
-      .get('https://randomuser.me/api/')
-      .then(res => res.data)
-      .then(user => {
-        dispatch({type: LOAD, user: user.results[0]})
-        return user
-      })
-  }
-}
+    Received value does not match stored snapshot "EntryScreen renders correctly 1".
 
-export function update(email) {
-  return (dispatch) => {
-    dispatch({type: UPDATE, email})
-    return Promise.resolve(email)
-  }
-}
+    - Snapshot
+    + Received
+
+    @@ -297,10 +297,67 @@
+                    "paddingRight": 16,
+                  }
+                }
+                uppercase={false}
+              >
+    +           前へ
+    +         </Text>
+    +       </View>
+    +       <View
+    +         accessible={true}
+    +         isTVSelectable={true}
+    +         onResponderGrant={[Function]}
+    +         onResponderMove={[Function]}
+    +         onResponderRelease={[Function]}
+    +         onResponderTerminate={[Function]}
+    +         onResponderTerminationRequest={[Function]}
+    +         onStartShouldSetResponder={[Function]}
+    +         style={
+    +           Object {
+    +             "alignItems": "center",
+    +             "alignSelf": "stretch",
+    +             "backgroundColor": "transparent",
+    +             "borderBottomWidth": null,
+    +             "borderColor": null,
+    +             "borderLeftWidth": null,
+    +             "borderRadius": 0,
+    +             "borderRightWidth": null,
+    +             "borderTopWidth": null,
+    +             "elevation": 0,
+    +             "flex": 1,
+    +             "flexDirection": null,
+    +             "height": 55,
+    +             "justifyContent": "center",
+    +             "opacity": 1,
+    +             "paddingBottom": 6,
+    +             "paddingTop": 6,
+    +             "shadowColor": null,
+    +             "shadowOffset": null,
+    +             "shadowOpacity": null,
+    +             "shadowRadius": null,
+    +           }
+    +         }
+    +       >
+    +         <Text
+    +           accessible={true}
+    +           allowFontScaling={true}
+    +           ellipsizeMode="tail"
+    +           style={
+    +             Object {
+    +               "backgroundColor": "transparent",
+    +               "color": "#6b6b6b",
+    +               "fontFamily": "System",
+    +               "fontSize": 14,
+    +               "lineHeight": 16,
+    +               "marginLeft": 0,
+    +               "marginRight": 0,
+    +               "paddingLeft": 16,
+    +               "paddingRight": 16,
+    +             }
+    +           }
+    +           uppercase={false}
+    +         >
+                次へ
+              </Text>
+            </View>
+          </View>
+        </View>
+
+      21 |       )
+      22 |       .toJSON()
+    > 23 |     expect(tree).toMatchSnapshot()
+         |                  ^
+      24 |   })
+      25 | 
+      26 | })
+
+      at Object.<anonymous> (test/test.js:23:18)
+
+ › 1 snapshot failed.
+Snapshot Summary
+ › 1 snapshot failed from 1 test suite. Inspect your code changes or run `yarn test -u` to update them.
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 1 total
+Snapshots:   1 failed, 1 total
+Time:        3.885s
+Ran all test suites.
 ```
 
-UserScreen画面ではEntryScreen画面で入力したメールアドレスを表示します。  
+問題がない場合は、次のjestコマンドでスナップショットを更新します。  
 
-```UserScreen.js
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
-import React from 'react'
-import { connect } from 'react-redux'
-import { Platform, StyleSheet, View } from 'react-native'
-import { Text, Thumbnail, Icon, Button, Container, Header, Content, Title, Body, Left, Right, Card } from 'native-base'
-import { load } from '../modules/user'
-
-const instructions = Platform.select({
-  ios: 'ios',
-  android: 'android',
-})
-
-const bgColor = '#F5FCFF'
-const iconColor = '#aaaa00'
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: bgColor,
-  },
-  content: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  beer: {
-    marginLeft: -25,
-  },
-})
-
-const HeaderBackButton = ({onPress}) => (
-  <Left>
-    <Button transparent>
-      <Icon name={Platform.OS === 'ios' ? 'ios-arrow-back' : 'arrow-back'} onPress={onPress} />
-    </Button>
-  </Left>
-)
-
-@connect(
-state => ({
-  user: state.user.user,
-  email: state.user.email,
-}),
-{load})
-export default class UserScreen extends React.Component {
-  state = {count: 0}
-
-  componentDidMount () {
-    this.props.load()
-  }
-
-  render () {
-    const { user, email, navigation } = this.props
-    const { count } = this.state
-
-    return (
-       <Container>
-        <Header>
-          <HeaderBackButton onPress={() => navigation.goBack()} />
-          <Body>
-            <Title>ログイン</Title>
-          </Body>
-          <Right />
-        </Header>
-        <Content>
-          <Card style={styles.container}>
-            {user &&
-              <View style={styles.content}>
-                <Thumbnail source={{uri: user.picture.large}} />
-                <View>
-                  <Text>名前: {user.name.last} {user.name.first}</Text>
-                  <Text>性別: {user.gender}</Text>
-                  <Text>プラットフォーム: {instructions}</Text>
-                  <Text>email: {email}</Text>
-                  <Button small iconRight  transparent primary onPress={() => this.setState({count: count + 1})}>
-                    <Icon type='Ionicons' name='md-beer' style={{color: iconColor}}/>
-                    <Text style={styles.beer}>{count}</Text>
-                  </Button>
-                </View>
-              </View>
-            }
-          </Card>
-        </Content>
-      </Container>
-    )
-  }
-}
 ```
-
-![UserScreen](./docs/UserScreen.png)
+$ jest --updateSnapshot
+```
