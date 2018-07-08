@@ -6,6 +6,10 @@ $ yarn add react-navigation
 ```
 
 App.jsにルーティング設定を記述します。  
+後述のEntryScreen画面（Component）とUserScreen画面(Component)を  
+createStackNavigatorにて指定し、Navigation Componentを作成します。  
+headerオプションをnullにすることでreact-navigationのNavigationBarを非表示にできます。(NativeBaseの方で表示するため)  
+initialRouteNameには初期画面を指定します。  
 
 ```App.js
 import React from 'react'
@@ -31,8 +35,10 @@ export const App = () => (
 )
 ```
 
-EntryScreen.jsに
-`navigation.navigate('Login')`
+EntryScreen.jsを作成します。  
+Navigation Componentでwrapされているため、  
+navigation propsが参照できます。  
+実際に遷移しているのは`navigation.navigate('Login')`の箇所です。  
 
 ```EntryScreen.js
 /**
@@ -78,6 +84,11 @@ export default class EntryScreen extends React.Component {
 }
 ```
 
+![EntryScreen](./docs/EntryScreen.png)
+
+
+UserScreen画面です。  
+`navigation.goBack()`で前の画面に遷移できます。  
 
 ```UserScreen.js
 /**
@@ -173,3 +184,5 @@ export default class UserScreen extends React.Component {
   }
 }
 ```
+
+![UserScreen](./docs/UserScreen.png)
