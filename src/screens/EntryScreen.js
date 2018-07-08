@@ -6,7 +6,7 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { Container, Item, Header, Body, Title, Content, Right, Footer, FooterTab, Card, Input, Button, Text } from 'native-base'
 import { Field, reduxForm } from 'redux-form'
 import isEmail from 'validator/lib/isEmail'
@@ -23,10 +23,12 @@ const styles = StyleSheet.create({
 const renderInput = ({ input, placeholder, meta: { touched, error } }) => {
   const hasError = touched && error
   return (
-    <Item error={!!hasError}>
-      <Input placeholder={placeholder} {...input}/>
+    <View>
+      <Item error={!!hasError}>
+        <Input placeholder={placeholder} {...input}/>
+      </Item>
       {hasError ? <Text style={styles.error}>{error}</Text> : <Text />}
-    </Item>
+    </View>
   )
 }
 
@@ -37,7 +39,7 @@ const renderInput = ({ input, placeholder, meta: { touched, error } }) => {
     if (!values.email) {
       errors.email = '必須項目です'
     } else if (!isEmail(values.email)) {
-      errors.email = 'メアドでありません'
+      errors.email = 'メールアドレスではありません'
     }
     return errors
   },
