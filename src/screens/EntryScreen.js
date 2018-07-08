@@ -23,7 +23,7 @@ export default class EntryScreen extends React.Component {
 
   move = () => {
     const { navigation } = this.props
-    navigation.navigate('Login')
+    navigation.navigate('User')
   }
 
   render () {

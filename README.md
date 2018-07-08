@@ -26,7 +26,7 @@ import UserScreen from './screens/UserScreen'
 // ルーティングする画面を定義
 export const Navigation = createStackNavigator({
   Entry: { screen: EntryScreen, navigationOptions: { header: null } },
-  Login: { screen: UserScreen, navigationOptions: { header: null }},
+  User: { screen: UserScreen, navigationOptions: { header: null }},
 }, {initialRouteName: 'Entry'})
 
 
@@ -38,7 +38,7 @@ export const App = () => (
 EntryScreen.jsを作成します。  
 Navigation Componentでwrapされているため、  
 navigation propsが参照できます。  
-実際に遷移しているのは`navigation.navigate('Login')`の箇所です。  
+実際に遷移しているのは`navigation.navigate('User')`の箇所です。  
 
 ```EntryScreen.js
 /**
@@ -66,7 +66,7 @@ export default class EntryScreen extends React.Component {
 
   move = () => {
     const { navigation } = this.props
-    navigation.navigate('Login')
+    navigation.navigate('User')
   }
 
   render () {
