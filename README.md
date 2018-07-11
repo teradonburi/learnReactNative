@@ -307,7 +307,7 @@ export default class UserScreen extends React.Component {
         <Header>
           <HeaderBackButton onPress={() => navigation.goBack()} />
           <Body>
-            <Title>ログイン</Title>
+            <Title>ユーザ</Title>
           </Body>
           <Right />
         </Header>
