@@ -48,12 +48,17 @@ import renderer from 'react-test-renderer'
 import configureStore from 'redux-mock-store'
 import { Provider } from 'react-redux'
 
+
 const mockStore = configureStore([])
 
 describe('EntryScreen', () => {
 
   // redux-mock-storeの初期化
-  const initialState = {}
+  const initialState = {
+    user: {
+      email: null,
+    },
+  }
   const store = mockStore(initialState)
 
   it('renders correctly', () => {
@@ -66,6 +71,7 @@ describe('EntryScreen', () => {
       .toJSON()
     expect(tree).toMatchSnapshot()
   })
+
 })
 ```
 
@@ -210,3 +216,133 @@ Ran all test suites.
 ```
 $ jest --updateSnapshot
 ```
+
+# detox
+[detox](https://github.com/wix/detox)はReact NativeのE2Eテストツールです。  
+Automation Test（自動UIテスト）を行うことができます。  
+まず、必要なパッケージをインストールします。  
+
+```
+$ yarn add --dev detox eslint-plugin-detox
+$ yarn global add detox-cli
+```
+
+Homebrewでapplesimutilsをインストールします。  
+
+```
+$ brew tap wix/brew
+$ brew install applesimutils
+```
+
+package.jsonに次の設定を追加します。  
+learnReactNativeの名前の箇所（.app、.xcodeproj、-schemeの引数）は各プロジェクト名に置き換えてください  
+
+```package.json
+"detox": {
+    "configurations": {
+      "ios.sim.debug": {
+        "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/learnReactNative.app",
+        "build": "xcodebuild -project ios/learnReactNative.xcodeproj -scheme learnReactNative -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
+        "type": "ios.simulator",
+        "name": "iPhone 8"
+      }
+    },
+    "test-runner": "jest"
+  }
+```
+
+プロジェクトフォルダ直下で以下のコマンドを実行します。  
+
+```
+$ detox build
+```
+
+e2eフォルダが生成され、フォルダ以下にconfig.json、init.js、firstTest.spec.jsが生成されます。  
+jestフォルダ以下の.eslintrc.jsをe2eフォルダにコピーします。  
+e2eフォルダの.eslintrc.jsにはeselint-detox-pluginの設定を追記します。  
+
+```
+'plugins': [
+  'react',
+  'react-native',
+  'jest',
+  'detox',
+],
+```
+
+firstTest.spec.jsにE2Eテストを追加します。  
+
+```
+/* eslint-env detox/detox */
+describe('Example', () => {
+  beforeEach(async () => {
+    await device.reloadReactNative()
+  })
+
+  it('ログイン画面からメールアドレスを入力してログインできる', async () => {
+    await expect(element(by.text('ログイン'))).toBeVisible()
+    await element(by.id('email')).typeText('abc@example.com')
+    await element(by.id('login')).tap()
+    await expect(element(by.text('ユーザ'))).toBeVisible()
+  })
+})
+```
+
+EntryScreen.jsに操作するUIにはtestID属性を付与します。  
+
+```EntryScreen.js
+// custom属性追加
+const renderInput = ({ input, placeholder, meta: { touched, error }, ...custom}) => {
+  const hasError = touched && error
+  return (
+    <View>
+      <Item error={!!hasError}>
+        <Input placeholder={placeholder} {...input} {...custom}/>
+      </Item>
+      {hasError ? <Text style={styles.error}>{error}</Text> : <Text />}
+    </View>
+  )
+}
+
+export default class EntryScreen extends React.Component {
+  render () {
+    const {handleSubmit} = this.props
+
+    return (
+      <Container>
+        <Header>
+          <Body>
+            <Title>ログイン</Title>
+          </Body>
+          <Right />
+        </Header>
+        <Content>
+          <Card>
+            <Field testID='email' name='email' component={renderInput} placeholder='メールアドレス' />
+          </Card>
+        </Content>
+        <Footer>
+          <FooterTab>
+            <Button testID='login' full onPress={handleSubmit(this.submit)}><Text>次へ</Text></Button>
+          </FooterTab>
+        </Footer>
+      </Container>
+    )
+  }
+}
+```
+
+次のコマンドでtestを実行できます。  
+
+```
+$ detox test
+```
+
+うまく動作しない場合は、simulatorのソフトウェアキーボードが動作しているか確認してみてください。  
+（Toggle Software Keyboardで表示切り替えを試してみる）  
+![keyboard](./docs/keyboard.png)  
+
+## Android Emulatorで実行する場合
+Android StudioでのAndroidプロジェクト側での設定が必要になります。  
+詳細は下記を参照ください。  
+[Adding Android](https://github.com/wix/detox/blob/master/docs/Introduction.Android.md)

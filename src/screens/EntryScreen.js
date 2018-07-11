@@ -19,12 +19,13 @@ const styles = StyleSheet.create({
   },
 })
 
-const renderInput = ({ input, placeholder, meta: { touched, error } }) => {
+// custom属性追加
+const renderInput = ({ input, placeholder, meta: { touched, error }, ...custom}) => {
   const hasError = touched && error
   return (
     <View>
       <Item error={!!hasError}>
-        <Input placeholder={placeholder} {...input}/>
+        <Input placeholder={placeholder} {...input} {...custom}/>
       </Item>
       {hasError ? <Text style={styles.error}>{error}</Text> : <Text />}
     </View>
@@ -84,12 +85,12 @@ export default class EntryScreen extends React.Component {
         </Header>
         <Content>
           <Card>
-            <Field name='email' component={renderInput} placeholder='メールアドレス' />
+            <Field testID='email' name='email' component={renderInput} placeholder='メールアドレス' />
           </Card>
         </Content>
         <Footer>
           <FooterTab>
-            <Button full onPress={handleSubmit(this.submit)}><Text>次へ</Text></Button>
+            <Button testID='login' full onPress={handleSubmit(this.submit)}><Text>次へ</Text></Button>
           </FooterTab>
         </Footer>
       </Container>
