@@ -1,4 +1,4 @@
-# はじめに
+# ReactNative勉強会
 
 [ReactJS](https://github.com/teradonburi/learnReactJS)ハンズオンの続編です。  
 React Nativeでスマホネイティブアプリを開発するためのチュートリアルです。  
