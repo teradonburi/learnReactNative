@@ -1,5 +1,5 @@
 # react-navigation
-react-navigationを使うと画面遷移ができます。  
+[react-navigation](https://github.com/react-navigation/react-navigation)を使うと画面遷移ができます。  
 
 ```
 $ yarn add react-navigation
