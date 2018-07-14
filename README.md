@@ -1,6 +1,5 @@
 # redux-form
-
-form送信をする場合はredux-formライブラリが便利なので、  
+form送信をする場合は[redux-form](https://redux-form.com/7.4.2/)ライブラリが便利なので、  
 redux-formライブラリを導入します。  
 
 ```
