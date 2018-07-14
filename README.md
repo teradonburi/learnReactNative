@@ -180,7 +180,7 @@ export default class App extends React.Component {
 }
 ```
 
-# デバッグ
+# デバッグツールの導入
 
 エミュレータ上でCommand + Dキーを押すと各種デバッグ機能が使えます。
 
@@ -192,7 +192,7 @@ export default class App extends React.Component {
 * Start Systrace: 端末のメモリなどのハードウェア状態を確認できます。
 * Enable Hot Reloading: Live Reloadとセットで使います。内部パラメータは変更しないで画面表示のみ再レンダリングします。
 * Toggle Inspector: Viewのレイアウト情報をデバッグできます。
-* Show Perf Monitor: どのレンダリングに負荷がかかっているかなどの
+* Show Perf Monitor: どのレンダリングに負荷がかかっているかなどの表示がされます。
 
 Start Remote JS Debuggingを有効にするとChromeで以下の画面が開きます。  
 開発者ツールを開くとリモートでソースコードが見れるようになります。
