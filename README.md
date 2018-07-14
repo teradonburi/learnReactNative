@@ -4,10 +4,17 @@
 
 NodeJSはインストール済み前提(v8.10.0)  
 以下を追加でインストール  
+watchmanとreact-native-cliをインストールします。  
 
 ```
-$brew install watchman
-$npm install -g react-native-cli
+$ brew install watchman
+$ yarn global add react-native-cli
+```
+
+次のコマンドでReact Nativeのプロジェクトを作成します。
+
+```
+$ react-native init learnReactNative
 ```
 
 ## Android
