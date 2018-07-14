@@ -7,10 +7,8 @@ iOS、Android両対応なネイティブのUIコンポーネントを使うこ�
 $yarn add native-base
 ```
 
-# アプリのthemeの作成
+# テーマの作成
 テーマを変更するには[Customize](http://docs.nativebase.io/Customize.html)を参考にします。  
-
-## ejectTheme.jsから生成する
 次のコマンドでテーマを生成することができます。  
 
 ```
@@ -43,7 +41,12 @@ const Application = () => (
 AppRegistry.registerComponent('learnReactNative', () => Application)
 ```
 
-### Theme Color
+次のビジュアルエディタより独自のvariable.jsを生成することもできます。  
+[NativeBase Customizer](https://nativebase.io/customizer/)  
+
+![Custmizer](./docs/customizer.png)
+
+### テーマ色
 テーマ色を変更するにはplatform.js(もしくはmaterial.js/commonColor.js)以下の色を変更します。  
 
 - Primary color: brandPrimary
@@ -53,7 +56,7 @@ AppRegistry.registerComponent('learnReactNative', () => Application)
 - Warning color: brandWarning
 
 
-### Theme Font
+### テーマフォント
 デフォルトのフォントファミリーを変更するには、platform.js(もしくはmaterial.js/commonColor.js)のfontFamily変数を変更します。
 以下のフォントファミリがデフォルトで利用可能です。  
 
@@ -73,12 +76,6 @@ AppRegistry.registerComponent('learnReactNative', () => Application)
 テーマの細かい色指定やサイズ指定は次のチートシートを参考にしてください。  
 [Theme variables Cheat sheet](http://docs.nativebase.io/docs/ThemeVariables.html)  
 
-
-## NativeBase Customizerより生成
-次のビジュアルエディタより独自のvariable.jsを生成できます。  
-[NativeBase Customizer](https://nativebase.io/customizer/)  
-
-![Custmizer](./docs/customizer.png)
 
 # アイコン
 アイコンは[Icon](http://docs.nativebase.io/Components.html#header-transparent-headref)コンポーネントを利用することで利用可能です。  
