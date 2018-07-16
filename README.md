@@ -255,6 +255,7 @@ learnReactNativeの名前の箇所（.app、.xcodeproj、-schemeの引数）は�
 
 ```
 $ detox build
+$ detox init -r jest
 ```
 
 e2eフォルダが生成され、フォルダ以下にconfig.json、init.js、firstTest.spec.jsが生成されます。  
