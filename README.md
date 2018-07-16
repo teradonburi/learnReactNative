@@ -260,7 +260,7 @@ $ detox init -r jest
 
 e2eフォルダが生成され、フォルダ以下にconfig.json、init.js、firstTest.spec.jsが生成されます。  
 jestフォルダ以下の.eslintrc.jsをe2eフォルダにコピーします。  
-e2eフォルダの.eslintrc.jsにはeselint-detox-pluginの設定を追記します。  
+e2eフォルダの.eslintrc.jsにはeslint-detox-pluginの設定を追記します。  
 
 ```
 'plugins': [
