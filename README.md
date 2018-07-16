@@ -14,7 +14,7 @@ $ yarn global add react-native-cli
 次のコマンドでReact Nativeのプロジェクトを作成します。
 
 ```
-$ react-native init learnReactNative
+$ react-native init --version="0.55.4" learnReactNative
 ```
 
 ## Android
