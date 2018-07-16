@@ -3,7 +3,7 @@
 [eslint-plugin-react-native](https://github.com/intellicode/eslint-plugin-react-native)
 
 ```
-$ yarn add --dev eslint babel-eslint eslint-react eslint-react-native
+$ yarn add --dev eslint babel-eslint eslint-plugin-react eslint-plugin-react-native
 ```
 
 .eslintrc.jsです。  
